@@ -51,6 +51,17 @@ const (
 		{{end}}
 	}
 
+	{{ range $field := .Fields }}
+	
+	func (s *{{$struct.Name}}) Get{{$field.Name}}() {{$field.Type}} {
+		return s.{{$field.Name}}
+	}
+
+	func (s *{{$struct.Name}}) Set{{$field.Name}}({{$field.Name}} {{$field.Type}})  {
+		s.{{$field.Name}} = {{$field.Name}}
+	}
+	{{end}}
+
 	func (s *{{ $struct.Name }}) String() string {
 		return "{{ range $field := .Fields }}{{ $field.Name }}: s.{{ $field.Name }}{{ end }}"
 	}
@@ -111,11 +122,15 @@ func prepareData() (structsDetails Final, err error) {
 			fields := make([]Field, 0)
 
 			for _, field := range e.Fields.List {
-				fields = append(fields, Field{
+				f := Field{
 					Name: field.Names[0].Name,
 					Type: string(buf.Bytes()[field.Type.Pos()-1 : field.Type.End()-1]),
 					Tag:  GenerateTagName(field.Names[0].Name),
-				})
+				}
+				if field.Names[0].IsExported() {
+					f.Tag = GenerateTagName(field.Names[0].Name)
+				}
+				fields = append(fields, f)
 			}
 			sd.Fields = fields
 			structsDetails.StructsDetails = append(structsDetails.StructsDetails, sd)
