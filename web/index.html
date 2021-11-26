@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Document</title>
+    <script src="../app/wasm_exec.js"></script>
+    <script src="./index.js"></script>
+</head>
+
+<body>
+    <div id="page">
+        <div id="input">
+            <h2>Input</h2>
+            <textarea name="inputText" id="input-text" cols="55" rows="30"></textarea>
+        </div>
+        <button onclick="generate()">Generate</button>
+        <div id="output">
+            <h2>Output</h2>
+            <textarea name="outputText" id="output-text" cols="55" rows="30"></textarea>
+        </div>
+    </div>
+    <script>
+        document.getElementById("input-text").value = `package test
+
+    type a struct {
+    name string
+    Age int
+    }`
+    </script>
+</body>
+
+</html>
